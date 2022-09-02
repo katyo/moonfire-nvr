@@ -76,7 +76,7 @@ pub fn run(_args: &super::Args, tx: &rusqlite::Transaction) -> Result<(), Error>
 
     // Only insert still-referenced video sample entries. I've had problems with
     // no-longer-referenced ones (perhaps from some ancient, buggy version of Moonfire NVR) for
-    // which avcc.create_context(()) fails.
+    // which avcc.create_context() fails.
     let mut stmt = tx.prepare(
         r#"
         select
@@ -108,7 +108,7 @@ pub fn run(_args: &super::Args, tx: &rusqlite::Transaction) -> Result<(), Error>
         if avcc.num_of_sequence_parameter_sets() != 1 {
             bail!("Multiple SPSs!");
         }
-        let ctx = avcc.create_context(()).map_err(|e| {
+        let ctx = avcc.create_context().map_err(|e| {
             format_err!(
                 "Can't load SPS+PPS for video_sample_entry_id {}: {:?}",
                 id,
